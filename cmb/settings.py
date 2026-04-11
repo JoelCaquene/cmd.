@@ -17,15 +17,19 @@ SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', default=False, cast=bool)
 
 # ======================================================================
-# CONFIGURAÇÃO DOS HOSTS PERMITIDOS
+# CONFIGURAÇÃO DOS HOSTS PERMITIDOS (DOMÍNIO PERSONALIZADO)
 # ======================================================================
-# No Render, adicione nas variáveis: www.cmd.it.com,cmd.it.com,.onrender.com
-hosts_string = config('ALLOWED_HOSTS', default='.render.com,localhost,127.0.0.1')
-ALLOWED_HOSTS = [host.strip() for host in hosts_string.split(',') if host.strip()]
+ALLOWED_HOSTS = [
+    'www.cmd.it.com',
+    'cmd.it.com',
+    'cmd-ang.onrender.com',
+    'localhost',
+    '127.0.0.1',
+]
 
 if not DEBUG:
     RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
-    if RENDER_EXTERNAL_HOSTNAME:
+    if RENDER_EXTERNAL_HOSTNAME and RENDER_EXTERNAL_HOSTNAME not in ALLOWED_HOSTS:
         ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 # Application definition
@@ -118,24 +122,24 @@ AUTH_USER_MODEL = 'core.CustomUser'
 LOGIN_URL = 'login'
 
 if not DEBUG:
-    # Força o uso de www. antes do domínio
+    # 1. FORÇA O USO DE WWW (Se entrar sem www, ele redireciona)
     PREPEND_WWW = True
     
-    # Redireciona HTTP para HTTPS automaticamente
+    # 2. REDIRECIONA PARA HTTPS (Segurança do site)
     SECURE_SSL_REDIRECT = True
     
-    # Configurações rigorosas de cookies e segurança
+    # 3. SEGURANÇA DE COOKIES
     CSRF_COOKIE_SECURE = True
     SESSION_COOKIE_SECURE = True
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
     X_FRAME_OPTIONS = 'DENY'
     
-    # HSTS para dizer ao navegador para usar sempre HTTPS
+    # 4. HSTS (Força navegadores a usar HTTPS)
     SECURE_HSTS_SECONDS = 31536000
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
     
-    # Garante que o Django saiba que está atrás de um proxy seguro (Render)
+    # 5. HEADER PARA PROXY DO RENDER
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     
