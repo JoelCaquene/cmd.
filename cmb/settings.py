@@ -19,14 +19,13 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 # ======================================================================
 # CONFIGURAÇÃO DOS HOSTS PERMITIDOS
 # ======================================================================
-hosts_string = config('ALLOWED_HOSTS', default='')
+hosts_string = config('ALLOWED_HOSTS', default='.render.com,localhost,127.0.0.1')
 ALLOWED_HOSTS = [host.strip() for host in hosts_string.split(',') if host.strip()]
 
 if not DEBUG:
     RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
     if RENDER_EXTERNAL_HOSTNAME:
-        if RENDER_EXTERNAL_HOSTNAME not in ALLOWED_HOSTS:
-            ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+        ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 # Application definition
 INSTALLED_APPS = [
@@ -91,31 +90,27 @@ USE_I18N = True
 USE_TZ = True
 
 # ======================================================================
-# STATIC FILES (CSS, JS, Imagens do Sistema)
+# STATIC FILES
 # ======================================================================
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 
-# Armazenamento de arquivos estáticos (WhiteNoise)
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# Armazenamento otimizado para produção
+if not DEBUG:
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # ======================================================================
-# MEDIA FILES (Uploads de usuários - Comprovantes, etc)
+# MEDIA FILES
 # ======================================================================
-# Em produção no Render (sem Cloudinary), salvamos na pasta media local
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# Garante que a pasta media existe para evitar erros de permissão
 if not os.path.exists(MEDIA_ROOT):
     os.makedirs(MEDIA_ROOT)
 
-# Default storage padrão do Django para disco local
-DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
-
 # ======================================================================
-# SEGURANÇA E OUTROS
+# SEGURANÇA
 # ======================================================================
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'core.CustomUser'
