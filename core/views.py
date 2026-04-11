@@ -253,7 +253,7 @@ def process_task(request):
         # 3. Pega o valor do ganho (USANDO O NOME CORRETO DO SEU MODELS: daily_gain)
         task_earnings = Decimal(str(active_user_level.level.daily_gain))
 
-        # 4. Registra a tarefa no banco (Para aparecer no Admin)
+        # 4. Registra a tarefa no banco de dados (Para aparecer no Admin)
         Task.objects.create(
             user=user, 
             earnings=task_earnings
