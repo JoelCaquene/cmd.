@@ -125,11 +125,11 @@ class Deposit(models.Model):
     def __str__(self):
         return f"Depósito de {self.amount} por {self.user.phone_number}"
 
-# ---
-
 class Withdrawal(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, verbose_name="Usuário")
-    amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Valor")
+    amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Valor Bruto (Total)")
+    fee = models.DecimalField(max_digits=10, decimal_places=2, default=0.00, verbose_name="Taxa (10%)")
+    net_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.00, verbose_name="Valor Líquido (A Pagar)")
     status = models.CharField(max_length=20, default='Pending', verbose_name="Status")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Data de Criação")
     
@@ -138,9 +138,7 @@ class Withdrawal(models.Model):
         verbose_name_plural = "Saques"
 
     def __str__(self):
-        return f"Saque de {self.amount} por {self.user.phone_number} ({self.status})"
-
-# ---
+        return f"Saque de {self.net_amount} para {self.user.phone_number}"
 
 class Level(models.Model):
     name = models.CharField(max_length=50, unique=True, verbose_name="Nome do Nível")

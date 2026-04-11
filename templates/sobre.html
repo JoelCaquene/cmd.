@@ -1,202 +1,266 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Sobre Nós{% endblock %}
+{% block title %}Sobre a CMB{% endblock %}
 
 {% block content %}
-<div class="container-sobre-full">
-    <div class="custom-header">
-        <h1>Sobre Nós</h1>
-    </div>
-
-    <div class="glass-card">
-        <div class="card-body">
-            <h3>1. TABELA DE RENDIMENTO DOS FUNCIONÁRIOS</h3>
-            <p>Confira abaixo a nossa estrutura oficial de ganhos baseada no seu nível VIP ativo. Cada nível oferece uma rentabilidade diária ajustada.</p>
-            <div class="image-wrapper">
-                <img src="{% static 'images/tabela.jpg' %}" alt="Tabela de Rendimento" class="responsive-img">
-            </div>
-        </div>
-    </div>
-
-    <div class="glass-card">
-        <div class="card-body">
-            <h3>2. SUBSÍDIO DE CONVITE DOS AFILIADOS</h3>
-            <p>Ganhe bónus imediatos ao expandir a sua rede. Receba subsídios diretos por cada ativação de nível na sua equipa.</p>
-            <div class="image-wrapper">
-                <img src="{% static 'images/subsidio.jpg' %}" alt="Subsídio de Convite" class="responsive-img">
-            </div>
-        </div>
-    </div>
-
-    <div class="glass-card">
-        <div class="card-body">
-            <h3>3. COMISSÃO DE TAREFA DOS AFILIADOS</h3>
-            <p>Receba rendimentos passivos todos os dias através das tarefas completadas pelos seus afiliados.</p>
-            <div class="image-wrapper">
-                <img src="{% static 'images/comissao.jpg' %}" alt="Comissão de Tarefas" class="responsive-img">
-            </div>
-        </div>
-    </div>
-
-    <div class="glass-card main-info" style="margin-top: 30px; border-top: 4px solid #4CAF50;">
-        <div class="card-body">
-            <details class="money-usage-details" open>
-                <summary>
-                    <h3>COMO USAMOS O SEU DINHEIRO?</h3>
-                    <span class="icon-arrow">▼</span>
-                </summary>
-                <div class="details-content">
-                    <p class="intro-text">Na nossa plataforma, priorizamos a transparência e a eficiência na gestão do seu capital. Operamos através de três pilares estratégicos:</p>
-                    
-                    <div class="pilar">
-                        <h4>1. Arbitragem e Liquidez Corporativa</h4>
-                        <p>O seu capital inicial em Kwanzas (AOA) é convertido para Dólares (USD). Com essa liquidez, fornecemos crédito de curto prazo para <strong>Grandes Empresas</strong> e <strong>Casas de Apostas Reconhecidas</strong>. Essas operações garantem retornos fixos e seguros.</p>
-                    </div>
-
-                    <div class="pilar">
-                        <h4>2. Gestão Estratégica de Câmbio (Forex)</h4>
-                        <p>Nossa equipa de especialistas estuda flutuações globais para comprar moedas em baixa e revender em alta, aproveitando janelas de oportunidade 24 horas por dia em diferentes fusos horários.</p>
-                    </div>
-
-                    <div class="pilar">
-                        <h4>3. Inteligência Artificial e Otimização IBKR</h4>
-                        <p>Cada tarefa que você realiza alimenta nossa IA. Isso ajuda na <strong>Depuração de Dados</strong> para identificar preços subvalorizados e na <strong>Geolocalização de Lucro</strong>, mapeando transações mais vantajosas instantaneamente.</p>
-                    </div>
-
-                    <div class="security-note">
-                        <p><strong>Compromisso com a Segurança:</strong> Seu dinheiro é gerido por tecnologia de ponta para garantir que o capital esteja protegido e em constante crescimento.</p>
-                    </div>
-                </div>
-            </details>
-        </div>
-    </div>
+<div class="top-nav-bar">
+    <a href="javascript:history.back()" class="back-button">
+        <i class="fas fa-arrow-left"></i> Voltar
+    </a>
 </div>
 
+<div class="sobre-page-wrapper">
+    
+    <div class="main-header">
+        <h1>CONHEÇA A CMB</h1>
+        <p class="header-subtitle">Inovação em Investimentos Digitais</p>
+    </div>
+
+    <div class="custom-card card-blue">
+        <div class="card-image-top">
+            <img src="{% static 'images/origem_cmb.jpg' %}" alt="Origem CMB">
+        </div>
+        <div class="card-text">
+            <h2>1. ORIGEM DA CMB</h2>
+            <p>A <strong>CMB</strong> é uma plataforma de origem brasileira, fundada em <strong>12 de Março de 2026</strong> pela Universidade do Maranhão, sob a supervisão do renomado Doutor e Engenheiro <strong>Wilson Carlos Birles</strong>.</p>
+            <p>Ofertada pela CMB-Empresas de produção de moeda, nosso foco é o investimento em moedas virtuais como um meio inovador, seguro e sustentável. Esta experiência global inicia sua expansão pelos países de língua portuguesa, trazendo tecnologia de ponta para o mercado angolano.</p>
+        </div>
+    </div>
+
+    <div class="custom-card card-green">
+        <div class="card-image-top">
+            <img src="{% static 'images/objetivo_economia.jpg' %}" alt="Objetivo Global">
+        </div>
+        <div class="card-text">
+            <h2>2. OBJECTIVO</h2>
+            <p>Em um cenário mundial de conflitos e instabilidade econômica, a CMB acredita que a produção e o investimento em moedas virtuais são a chave para a recuperação financeira. Nosso objetivo é democratizar o acesso à economia digital, oferecendo uma alternativa sólida para melhorar a economia global.</p>
+        </div>
+    </div>
+
+    <div class="custom-card card-purple">
+        <div class="card-image-top">
+            <img src="{% static 'images/cargos_equipa.jpg' %}" alt="Cargos e Carreira">
+        </div>
+        <div class="card-text">
+            <h2>3. PLANO DE CARREIRA E CARGOS</h2>
+            
+            <div class="cargo-item">
+                <span class="badge-cargo">Trainee</span>
+                <p>Funcionário com menos de 5 subordinados ativos. Possui ganhos de tarefas diárias e direito a saque, sem salário fixo.</p>
+            </div>
+
+            <div class="cargo-item">
+                <span class="badge-cargo">Júnior</span>
+                <p>Possui <strong>5 subordinados ativos</strong>. Recebe ganhos diários + <strong>Salário Mensal de 5.000 Kz</strong>.</p>
+            </div>
+
+            <div class="cargo-item">
+                <span class="badge-cargo">Pleno</span>
+                <p>Possui <strong>10 subordinados ativos</strong>. Recebe ganhos diários + <strong>Salário Mensal de 10.000 Kz</strong>. Pode ser promovido a cargos administrativos.</p>
+            </div>
+
+            <div class="cargo-item">
+                <span class="badge-cargo">Staff</span>
+                <p>Possui <strong>20 subordinados ativos</strong>. Recebe ganhos diários + <strong>Salário Semanal de 10.000 Kz</strong>. Gerencia escritórios remotos ou físicos.</p>
+            </div>
+
+            <div class="cargo-item">
+                <span class="badge-cargo">Sênior Staff</span>
+                <p>Possui <strong>30 subordinados ativos</strong>. Recebe ganhos diários + <strong>Salário Semanal de 20.000 Kz</strong>. Atua como Diretor Geral Regional.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="custom-card card-gold">
+        <div class="card-image-top">
+            <img src="{% static 'images/tabela_investimento.jpg' %}" alt="Rendimento Investidores">
+        </div>
+        <div class="card-text">
+            <h2>4. RENDIMENTO DOS INVESTIDORES</h2>
+            <p>Consulte nossa tabela oficial para entender as margens de lucro diário de acordo com seu capital investido.</p>
+        </div>
+    </div>
+
+    <div class="custom-card card-orange">
+        <div class="card-image-top">
+            <img src="{% static 'images/comissao_subsidio.jpg' %}" alt="Subsídios de Convite">
+        </div>
+        <div class="card-text">
+            <h2>5. SUBSÍDIOS POR CONVITE</h2>
+            <p>Bonificações imediatas por cada novo parceiro que ingressa na sua rede com plano ativo.</p>
+        </div>
+    </div>
+
+    <div class="custom-card card-teal">
+        <div class="card-image-top">
+            <img src="{% static 'images/comissao_tarefas.jpg' %}" alt="Comissão Subordinados">
+        </div>
+        <div class="card-text">
+            <h2>6. COMISSÃO DE EQUIPE</h2>
+            <p>Receba uma porcentagem sobre todas as tarefas realizadas pelos seus subordinados diariamente.</p>
+        </div>
+    </div>
+
 <style>
-    /* Reset de margens para ocupar as laterais */
-    body, html {
-        margin: 0;
-        padding: 0;
-        overflow-x: hidden;
-    }
-
-    .container-sobre-full {
-        width: 100%;
-        padding: 0; 
-        background: radial-gradient(circle at top, #ffffff, #f0f2f5);
-        min-height: 100vh;
-        font-family: 'Segoe UI', Roboto, sans-serif;
-    }
-
-    .custom-header {
-        text-align: center;
-        padding: 25px 0;
-        background: white;
-    }
-
-    .custom-header h1 {
-        color: #00004d;
-        font-size: 1.6rem;
-        margin: 0;
-        border-bottom: 3px solid #4CAF50;
-        display: inline-block;
-        padding-bottom: 5px;
-    }
-
-    /* Cards ocupando largura total no mobile */
-    .glass-card {
-        background: rgba(255, 255, 255, 0.98);
-        margin: 15px 0;
-        padding: 20px 15px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-        border-top: 1px solid #eee;
-        border-bottom: 1px solid #eee;
-        width: 100%;
-        box-sizing: border-box;
-    }
-
-    /* Aba informativa final */
-    .money-usage-details summary {
-        list-style: none;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        cursor: pointer;
-        outline: none;
-    }
-
-    .money-usage-details summary::-webkit-details-marker { display: none; }
-
-    .icon-arrow { color: #4CAF50; transition: 0.3s; }
-    details[open] .icon-arrow { transform: rotate(180deg); }
-
-    .details-content {
-        padding-top: 15px;
-        border-top: 1px solid #f0f0f0;
-        margin-top: 10px;
-    }
-
-    .intro-text { font-style: italic; color: #666; margin-bottom: 20px; font-size: 0.9rem; }
-
-    .pilar {
-        background: #fdfdfd;
+    /* Barra Superior com Seta Voltar */
+    .top-nav-bar {
         padding: 15px;
-        border-left: 5px solid #00004d;
-        margin-bottom: 15px;
-        border-radius: 4px;
-        box-shadow: 2px 2px 5px rgba(0,0,0,0.02);
-    }
-
-    .pilar h4 { color: #00004d; margin-top: 0; margin-bottom: 8px; font-size: 1rem; }
-    .pilar p { font-size: 0.9rem; margin: 0; color: #333; line-height: 1.5; }
-
-    .security-note {
-        background: #e8f5e9;
-        padding: 12px;
-        border-radius: 8px;
-        color: #1b5e20;
-        font-size: 0.85rem;
-        text-align: center;
-        margin-top: 20px;
-    }
-
-    /* Estilos de Texto e Imagem */
-    .card-body h3 {
-        color: #00004d;
-        font-size: 1.05rem;
-        margin-top: 0;
-        margin-bottom: 12px;
-        font-weight: 700;
-    }
-
-    .card-body p {
-        color: #444;
-        font-size: 0.92rem;
-        line-height: 1.6;
-        margin-bottom: 15px;
-    }
-
-    .image-wrapper {
-        width: 100%;
-        border-radius: 8px;
-        overflow: hidden;
         background: #fff;
+        border-bottom: 1px solid #eee;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
     }
 
-    .responsive-img {
+    .back-button {
+        text-decoration: none;
+        color: #1a237e;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    /* Configurações Gerais */
+    .sobre-page-wrapper {
+        background-color: #f4f7f6;
+        padding: 15px;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .main-header {
+        text-align: center;
+        padding: 20px 10px;
+    }
+
+    .main-header h1 {
+        color: #1a237e;
+        font-weight: 800;
+        margin-bottom: 5px;
+        font-size: 1.8rem;
+    }
+
+    /* FIX: Escrita que estava branca agora está visível */
+    .header-subtitle {
+        color: #555 !important; 
+        font-weight: 500;
+        font-size: 1.1rem;
+    }
+
+    /* Estilo dos Cards */
+    .custom-card {
+        background: #fff;
+        border-radius: 20px;
+        overflow: hidden;
+        margin-bottom: 25px;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        border: none;
         width: 100%;
-        height: auto;
-        display: block;
     }
 
-    /* Para tablets e computadores, centraliza e dá margem */
+    .card-image-top {
+        width: 100%;
+        height: 220px;
+        overflow: hidden;
+    }
+
+    .card-image-top img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .card-text {
+        padding: 20px;
+    }
+
+    .card-text h2 {
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin-bottom: 15px;
+    }
+
+    .card-text p {
+        font-size: 0.95rem;
+        line-height: 1.6;
+        color: #333; /* Texto mais escuro para melhor leitura */
+        margin-bottom: 10px;
+    }
+
+    /* Cores dos Cards */
+    .card-blue h2 { color: #1565c0; }
+    .card-blue { border-left: 8px solid #1565c0; }
+
+    .card-green h2 { color: #2e7d32; }
+    .card-green { border-left: 8px solid #2e7d32; }
+
+    .card-purple h2 { color: #6a1b9a; }
+    .card-purple { border-left: 8px solid #6a1b9a; }
+
+    .card-gold h2 { color: #f9a825; }
+    .card-gold { border-left: 8px solid #f9a825; }
+
+    .card-orange h2 { color: #ef6c00; }
+    .card-orange { border-left: 8px solid #ef6c00; }
+
+    .card-teal h2 { color: #00695c; }
+    .card-teal { border-left: 8px solid #00695c; }
+
+    .card-legal { border-top: 5px solid #37474f; }
+
+    /* Itens de Cargos */
+    .cargo-item {
+        background: #f9f9f9;
+        padding: 12px;
+        border-radius: 12px;
+        margin-bottom: 10px;
+        border: 1px solid #eee;
+    }
+
+    .badge-cargo {
+        display: inline-block;
+        padding: 4px 12px;
+        background: #6a1b9a;
+        color: #fff;
+        border-radius: 20px;
+        font-weight: bold;
+        font-size: 0.8rem;
+        margin-bottom: 5px;
+    }
+
+    /* Documentos */
+    .document-container {
+        padding: 0 15px 20px 15px;
+    }
+
+    .doc-box {
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .doc-box span {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 8px;
+        color: #37474f;
+    }
+
+    .doc-box img {
+        width: 100%;
+        border: 2px solid #ddd;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    /* Responsividade Desktop */
     @media (min-width: 768px) {
-        .glass-card {
-            margin: 25px auto;
+        .sobre-page-wrapper {
             max-width: 800px;
-            border-radius: 12px;
-            border: 1px solid #ddd;
+            margin: 0 auto;
+        }
+        .card-image-top {
+            height: 350px;
         }
     }
 </style>

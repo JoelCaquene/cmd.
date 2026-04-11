@@ -37,40 +37,61 @@ class PlatformBankDetailsAdmin(admin.ModelAdmin):
 
 @admin.register(Deposit)
 class DepositAdmin(admin.ModelAdmin):
-    # Adicionamos 'proof_link' para mostrar o link na lista de depósitos
     list_display = ('user', 'amount', 'is_approved', 'created_at', 'proof_link') 
     search_fields = ('user__phone_number',)
     list_filter = ('is_approved',)
-    
-    # Campos que serão apenas de leitura na página de edição/criação
     readonly_fields = ('current_proof_display',)
 
-    # Método para criar o link do comprovativo na LISTA de depósitos
+    def save_model(self, request, obj, form, change):
+        # Verifica se o depósito está sendo marcado como aprovado e se ele ainda não estava aprovado antes
+        if obj.is_approved:
+            original_obj = Deposit.objects.filter(pk=obj.pk).first()
+            if not original_obj or not original_obj.is_approved:
+                # Soma o valor ao saldo do usuário
+                user = obj.user
+                user.available_balance += obj.amount
+                user.save()
+        
+        super().save_model(request, obj, form, change)
+
     def proof_link(self, obj):
         if obj.proof_of_payment:
-            # obj.proof_of_payment.url usa o Cloudinary Storage para obter o URL completo.
             return mark_safe(f'<a href="{obj.proof_of_payment.url}" target="_blank">Ver Comprovativo</a>')
         return "Nenhum"
-        
     proof_link.short_description = 'Comprovativo'
 
-    # Método para exibir a imagem/link na PÁGINA DE EDIÇÃO/MODIFICAÇÃO
     def current_proof_display(self, obj):
         if obj.proof_of_payment:
-            # Exibe a imagem diretamente e fornece um link para visualização
             return mark_safe(f'''
                 <a href="{obj.proof_of_payment.url}" target="_blank">Ver Imagem em Tamanho Real</a><br/>
                 <img src="{obj.proof_of_payment.url}" style="max-width:300px; height:auto; margin-top: 10px;" />
             ''')
         return "Nenhum Comprovativo Carregado"
-    
     current_proof_display.short_description = 'Comprovativo Atual'
 
 @admin.register(Withdrawal)
 class WithdrawalAdmin(admin.ModelAdmin):
-    list_display = ('user', 'amount', 'status', 'created_at')
+    # Adicionamos as funções que buscam os dados bancários na lista
+    list_display = ('user', 'amount', 'net_amount', 'get_iban', 'get_bank_name', 'get_holder', 'status', 'created_at')
     search_fields = ('user__phone_number',)
     list_filter = ('status',)
+    list_editable = ('status',)
+
+    # Métodos para buscar dados do modelo BankDetails do usuário
+    def get_iban(self, obj):
+        details = BankDetails.objects.filter(user=obj.user).first()
+        return details.IBAN if details else "Não cadastrado"
+    get_iban.short_description = 'IBAN Cliente'
+
+    def get_bank_name(self, obj):
+        details = BankDetails.objects.filter(user=obj.user).first()
+        return details.bank_name if details else "N/A"
+    get_bank_name.short_description = 'Banco'
+
+    def get_holder(self, obj):
+        details = BankDetails.objects.filter(user=obj.user).first()
+        return details.account_holder_name if details else "N/A"
+    get_holder.short_description = 'Titular'
 
 @admin.register(Task)
 class TaskAdmin(admin.ModelAdmin):

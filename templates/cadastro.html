@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Criar Conta - IBKR</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>Criar Conta - cmb</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 
     <style>
@@ -13,8 +13,9 @@
             --primary: #00a859; 
             --secondary: #ffcc00; 
             --dark: #1a1a1a;
-            --light-bg: #ffffff;
-            --glass-white: rgba(255, 255, 255, 0.95);
+            --glass-bg: rgba(255, 255, 255, 0.4);
+            --glass-border: rgba(255, 255, 255, 0.6);
+            --glass-text: #2d3748;
         }
 
         html, body {
@@ -32,7 +33,8 @@
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
-            background: radial-gradient(circle at top right, #ffffff, #f1f1f1);
+            /* Fundo gradiente vibrante para realçar o efeito de vidro */
+            background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 50%, #94a3b8 100%);
             color: var(--dark);
         }
 
@@ -44,63 +46,77 @@
             align-items: center;
             padding: 20px 25px;
             box-sizing: border-box;
+            z-index: 10;
         }
 
+        /* ESTILO EMBELEZADO CMB */
         .logo-img {
-            font-size: 26px;
-            font-weight: 800;
-            color: var(--primary);
-            letter-spacing: -1px;
-            text-transform: uppercase;
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            font-size: 32px;
+            font-weight: 900;
+            letter-spacing: -2px;
+            text-transform: lowercase;
+            background: linear-gradient(to bottom, #00a859, #007d42);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.1));
         }
 
         .nav-link-login {
             text-decoration: none;
-            color: var(--primary);
-            font-weight: 600;
+            color: #1a202c;
+            font-weight: 700;
             font-size: 0.85em;
-            padding: 7px 14px;
-            border: 1.5px solid var(--primary);
+            padding: 8px 18px;
             border-radius: 50px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            transition: 0.3s;
         }
 
-        /* CONTAINER ALARGADO (SEM ESPAÇOS LATERAIS EXCESSIVOS) */
+        .nav-link-login:hover {
+            background: rgba(255, 255, 255, 0.6);
+            transform: translateY(-2px);
+        }
+
+        /* CONTAINER PRINCIPAL DE VIDRO */
         .register-container {
             margin-top: 10px;
-            margin-bottom: 30px;
-            background: var(--glass-white);
+            margin-bottom: 40px;
+            background: rgba(255, 255, 255, 0.25);
             padding: 35px 25px;
-            border-radius: 20px;
-            width: 95%; 
+            border-radius: 30px;
+            width: 92%; 
             max-width: 480px; 
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-            border: 1px solid rgba(0,168,89,0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--glass-border);
             text-align: center;
             box-sizing: border-box;
+            z-index: 5;
         }
 
         h2 {
-            font-weight: 700;
-            font-size: 1.7rem;
-            margin-bottom: 25px;
-            color: #222;
+            font-weight: 800;
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            color: #1a202c;
         }
 
-        /* CAMPOS DE FORMULÁRIO COM ALTO CONTRASTE */
+        /* FORMULÁRIO COM FUNDO DE VIDRO NOS CAMPOS */
         .form-group {
-            margin-bottom: 18px;
+            margin-bottom: 20px;
             text-align: left;
         }
 
         .form-group label {
-            font-size: 0.8rem;
-            font-weight: 700;
-            margin-bottom: 6px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+            margin-left: 5px;
             display: block;
-            color: #333;
+            color: #4a5568;
             text-transform: uppercase;
         }
 
@@ -112,76 +128,92 @@
 
         .input-wrapper i.main-icon {
             position: absolute;
-            left: 15px;
+            left: 18px;
             color: var(--primary);
             font-size: 1.1rem;
+            z-index: 2;
         }
 
         .auth-form input {
             width: 100%;
-            padding: 16px 15px 16px 48px;
-            border: 2px solid #d0d0d0; /* Bordas mais visíveis conforme solicitado */
-            border-radius: 12px;
-            background: #ffffff;
+            padding: 16px 15px 16px 52px;
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            /* Vidro nos inputs */
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(5px);
             font-size: 1rem;
-            font-weight: 500;
-            transition: all 0.2s ease-in-out;
+            font-weight: 600;
+            transition: all 0.3s ease;
             outline: none;
             box-sizing: border-box;
-            color: #000;
+            color: #1a202c;
+        }
+
+        .auth-form input::placeholder {
+            color: #718096;
+            font-weight: 400;
         }
 
         .auth-form input:focus {
             border-color: var(--primary);
-            background: #fff;
-            box-shadow: 0 0 0 4px rgba(0, 168, 89, 0.1);
+            background: rgba(255, 255, 255, 0.6);
+            box-shadow: 0 0 15px rgba(0, 168, 89, 0.1);
         }
 
         /* POLÍTICAS */
         .policy-container {
             display: flex;
-            gap: 10px;
-            margin: 20px 0;
+            gap: 12px;
+            margin: 25px 5px;
             text-align: left;
             align-items: flex-start;
         }
 
         .policy-container input {
-            width: 18px;
-            height: 18px;
+            width: 20px;
+            height: 20px;
             accent-color: var(--primary);
             margin-top: 2px;
+            cursor: pointer;
         }
 
         .policy-text {
             font-size: 0.82rem;
-            color: #444;
-            line-height: 1.4;
+            color: #2d3748;
+            font-weight: 500;
+            line-height: 1.5;
         }
 
-        /* BOTÃO */
+        /* BOTÃO SUBMIT */
         .submit-button {
             width: 100%;
-            padding: 18px;
+            padding: 20px;
             border: none;
-            border-radius: 12px;
+            border-radius: 18px;
             background: linear-gradient(135deg, #00a859 0%, #008f4c 100%);
             color: white;
             font-size: 1.1rem;
-            font-weight: 700;
+            font-weight: 800;
             cursor: pointer;
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             text-transform: uppercase;
-            box-shadow: 0 8px 15px rgba(0, 168, 89, 0.2);
+            box-shadow: 0 10px 20px rgba(0, 168, 89, 0.3);
+            transition: 0.3s;
+        }
+
+        .submit-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 25px rgba(0, 168, 89, 0.4);
         }
 
         @media (max-width: 380px) {
             .register-container {
-                width: 98%;
-                padding: 25px 15px;
+                width: 95%;
+                padding: 30px 15px;
             }
         }
     </style>
@@ -189,8 +221,8 @@
 <body>
 
     <nav class="top-nav">
-        <div class="logo-img">IBKR</div>
-        <a href="{% url 'login' %}" class="nav-link-login">Já tenho conta</a>
+        <div class="logo-img">cmb</div>
+        <a href="{% url 'login' %}" class="nav-link-login">Login</a>
     </nav>
 
     <div class="register-container">
@@ -205,7 +237,7 @@
                 <label>Número de Telefone</label>
                 <div class="input-wrapper">
                     <i class="fa-solid fa-phone main-icon"></i>
-                    <input type="text" name="phone_number" placeholder="Ex: 941 000 000" required>
+                    <input type="text" name="phone_number" placeholder="Seu contacto" required>
                 </div>
             </div>
 
@@ -213,7 +245,7 @@
                 <label>Senha de Acesso</label>
                 <div class="input-wrapper">
                     <i class="fa-solid fa-lock main-icon"></i>
-                    <input type="password" name="password" placeholder="Crie sua senha" required>
+                    <input type="password" name="password" placeholder="Mínimo 6 caracteres" required>
                 </div>
             </div>
 
@@ -229,19 +261,19 @@
                 <label>Código de Convite</label>
                 <div class="input-wrapper">
                     <i class="fa-solid fa-ticket main-icon"></i>
-                    <input type="text" id="invite_code" name="invited_by_code" placeholder="Código (Opcional)" value="{{ request.GET.invite|default:'' }}">
+                    <input type="text" id="invite_code" name="invited_by_code" placeholder="Insira o código" value="{{ request.GET.invite|default:'' }}">
                 </div>
             </div>
 
             <label class="policy-container">
                 <input type="checkbox" required>
                 <span class="policy-text">
-                    Tenho +18 anos e aceito os <strong>Termos</strong> e a <strong>Política de Gestão IBKR</strong>.
+                    Aceito os <strong>Termos</strong> e a <strong>Política de Gestão cmb</strong>.
                 </span>
             </label>
             
             <button type="submit" class="submit-button">
-                <span>Criar a conta</span>
+                <span>Registrar Agora</span>
                 <i class="fa-solid fa-user-plus"></i>
             </button>
         </form>

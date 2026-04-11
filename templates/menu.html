@@ -1,362 +1,432 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}IBKR - Forex Mining Terminal{% endblock %}
+{% block title %}CMB - Investimentos Profissionais{% endblock %}
 
 {% block content %}
-<div id="welcomeModal" class="modal-overlay">
-    <div class="modal-content">
-        <div class="modal-header">
-            <div class="brand-logo-pop">IBKR</div>
-            <h2>Bem-vindo à Revolução Forex</h2>
-        </div>
-        <div class="modal-body">
-            <p class="intro-p">A <strong>IBKR</strong> é uma empresa líder em operações online no mercado Forex.</p>
-            
-            <div class="benefits-list">
-                <p>Após o seu depósito de garantia, você terá acesso a:</p>
-                <div class="benefit-item">
-                    <i class="fas fa-file-contract"></i>
-                    <span>1. Seu Certificado de Investimento Oficial</span>
-                </div>
-                <div class="benefit-item">
-                    <i class="fas fa-credit-card"></i>
-                    <span>2. Seu Cartão de Uso Pessoal Exclusivo</span>
-                </div>
-                <div class="benefit-item">
-                    <i class="fas fa-tshirt"></i>
-                    <span>3. Uma Camisa Oficial da Equipa IBKR</span>
-                </div>
-            </div>
 
-            <div class="support-area">
-                <p>Para mais informações, visite nosso canal oficial:</p>
-                <a href="{{ whatsapp_link }}" target="_blank" class="btn-whatsapp-pop">
-                    <i class="fab fa-whatsapp"></i> CANAL DE APOIO IBKR
+<div id="welcomeModal" class="modal-overlay">
+    <div class="modal-glass-card">
+        <div class="modal-header-glass">
+            <h3>CMB - SEJA BEM-VINDO</h3>
+        </div>
+        
+        <div class="modal-body-glass">
+            <ul class="info-list">
+                <li><strong>a)</strong> Antes de investir, entre em contacto com o Gerente e receba formação.</li>
+                <li><strong>b)</strong> Não aceitamos partilhar o link indiscriminadamente; convide apenas amigos e familiares próximos.</li>
+                <li><strong>c)</strong> Trabalhamos de segunda a sábado, das 09:00h às 18:00h.</li>
+                <li><strong>d)</strong> Grupo exclusivo para membros com <strong>VIP ATIVOS</strong>. Adira ao seu VIP e será adicionado.</li>
+            </ul>
+
+            <div class="manager-section">
+                <p class="info-footer">PARA MAIS INFORMAÇÕES, CHAME O GERENTE:</p>
+                <a href="{{ whatsapp_link }}" target="_blank" class="manager-link">
+                    <div class="icon-animated">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <span>CLICA NO ICONE PARA FALAR COM GERENTE</span>
                 </a>
             </div>
         </div>
-        <button class="btn-close-modal" onclick="closeModal()">Entendido</button>
+
+        <button class="btn-close-glass" onclick="closeModal()">FEICHAR A JANELA</button>
     </div>
 </div>
-
-<div class="forex-dashboard">
-
-    {# 1. Banner Superior #}
-    <div class="trading-header">
-        <div class="forex-chart-bg">
-            <div class="chart-overlay">
-                <h1 class="brand-title">IBKR</h1>
-                <p class="brand-subtitle">SMART FOREX TRADING</p>
-            </div>
-        </div>
-    </div>
-
-    {# 2. Botões de Ação Rápida #}
-    <div class="action-grid">
-        <a href="{% url 'deposito' %}" class="action-btn btn-blue">
-            <i class="fas fa-wallet"></i>
-            <span>Depósito</span>
-        </a>
-        <a href="{% url 'tarefa' %}" class="action-btn btn-teal">
-            <i class="fas fa-tasks"></i>
-            <span>Missão</span>
-        </a>
-        <a href="{% url 'roleta' %}" class="action-btn btn-yellow">
-            <i class="fas fa-clover"></i>
-            <span>Roleta</span>
-        </a>
-        <a href="{% url 'sobre' %}" class="action-btn btn-purple">
-            <i class="fas fa-info-circle"></i>
-            <span>Sobre</span>
-        </a>
-    </div>
-
-    {# 3. Lista de Moedas Estilo Binance #}
-    <div class="market-section">
-        <div class="market-header-list">
-            <span>Par de Moedas</span>
-            <span>Preço Live</span>
-            <span>24h %</span>
-        </div>
-        
-        <div class="crypto-list">
-            <div class="crypto-item">
-                <div class="coin-info">
-                    <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.png" width="20">
-                    <div><strong>BTC</strong>/USDT</div>
-                </div>
-                <div class="coin-price" id="btc-price">43,120.50</div>
-                <div class="coin-change pos">+2.45%</div>
-            </div>
-
-            <div class="crypto-item">
-                <div class="coin-info">
-                    <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png" width="20">
-                    <div><strong>ETH</strong>/USDT</div>
-                </div>
-                <div class="coin-price" id="eth-price">2,245.10</div>
-                <div class="coin-change pos">+1.12%</div>
-            </div>
-
-            <div class="crypto-item">
-                <div class="coin-info">
-                    <img src="https://cryptologos.cc/logos/bnb-bnb-logo.png" width="20">
-                    <div><strong>BNB</strong>/USDT</div>
-                </div>
-                <div class="coin-price" id="bnb-price">312.45</div>
-                <div class="coin-change neg">-0.54%</div>
-            </div>
-
-            <div class="crypto-item">
-                <div class="coin-info">
-                    <img src="https://cryptologos.cc/logos/solana-sol-logo.png" width="20">
-                    <div><strong>SOL</strong>/USDT</div>
-                </div>
-                <div class="coin-price" id="sol-price">98.22</div>
-                <div class="coin-change pos">+5.80%</div>
-            </div>
-            
-            <div class="crypto-item">
-                <div class="coin-info">
-                    <img src="https://cryptologos.cc/logos/xrp-xrp-logo.png" width="20">
-                    <div><strong>XRP</strong>/USDT</div>
-                </div>
-                <div class="coin-price">0.5241</div>
-                <div class="coin-change neg">-1.20%</div>
-            </div>
-        </div>
-    </div>
-
-</div>
-
-{# 4. Barra de Navegação Inferior #}
-<nav class="trading-nav">
-    <a href="{% url 'home' %}" class="nav-link active">
-        <i class="fas fa-home"></i>
-        <span>Início</span>
-    </a>
-    <a href="{% url 'nivel' %}" class="nav-link">
-        <i class="fas fa-bolt"></i>
-        <span>Nível</span>
-    </a>
-    <a href="{% url 'renda' %}" class="nav-link">
-        <i class="fas fa-chart-line"></i>
-        <span>Renda</span>
-    </a>
-    <a href="{% url 'equipa' %}" class="nav-link">
-        <i class="fas fa-users"></i>
-        <span>Equipa</span>
-    </a>
-    <a href="{% url 'perfil' %}" class="nav-link">
-        <i class="fas fa-user-cog"></i>
-        <span>Perfil</span>
-    </a>
-</nav>
 
 <style>
-    :root {
-        --bg-dark: #060d17;
-        --card-dark: #121b28;
-        --accent-blue: #00a8ff;
-        --accent-green: #00ff88;
-        --accent-red: #ff4d4d;
-        --text-gray: #8a94a6;
-    }
-
-    /* ESTILOS DO POP-UP (MODAL) */
+    /* Overlay com desfoque de fundo */
     .modal-overlay {
         position: fixed;
-        top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(0, 0, 0, 0.85);
-        display: flex; justify-content: center; align-items: center;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(8px); /* Desfoca o que está atrás */
+        display: flex;
+        align-items: center;
+        justify-content: center;
         z-index: 9999;
-        backdrop-filter: blur(5px);
+        padding: 20px; /* Garante que não toque nas laterais */
     }
 
-    .modal-content {
-        background: #fff;
-        width: 90%;
-        max-width: 350px;
-        border-radius: 20px;
+    /* Card com efeito de vidro (Glassmorphism) */
+    .modal-glass-card {
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 25px;
+        width: 100%;
+        max-width: 360px; /* Tamanho elegante e pequeno */
         padding: 25px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
         text-align: center;
-        color: #333;
-        animation: slideUp 0.4s ease-out;
+        animation: fadeInScale 0.4s ease-out;
     }
 
-    @keyframes slideUp {
-        from { transform: translateY(50px); opacity: 0; }
-        to { transform: translateY(0); opacity: 1; }
+    .modal-header-glass h3 {
+        color: #1a365d;
+        font-size: 18px;
+        font-weight: 800;
+        margin-bottom: 20px;
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+        padding-bottom: 10px;
     }
 
-    .brand-logo-pop {
-        background: #00004d;
-        color: white;
-        display: inline-block;
-        padding: 5px 15px;
-        border-radius: 8px;
-        font-weight: 900;
-        margin-bottom: 10px;
-    }
-
-    .modal-header h2 { font-size: 1.3rem; color: #00004d; margin-bottom: 15px; }
-    .intro-p { font-size: 0.9rem; margin-bottom: 15px; line-height: 1.4; }
-
-    .benefits-list {
+    .info-list {
+        list-style: none;
+        padding: 0;
         text-align: left;
-        background: #f8f9fa;
-        padding: 15px;
-        border-radius: 12px;
         margin-bottom: 20px;
     }
 
-    .benefits-list p { font-weight: bold; font-size: 0.85rem; margin-bottom: 10px; color: #000; }
-
-    .benefit-item {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-bottom: 8px;
-        font-size: 0.85rem;
+    .info-list li {
+        font-size: 13px;
+        color: #4a5568;
+        margin-bottom: 12px;
+        line-height: 1.4;
     }
 
-    .benefit-item i { color: #4CAF50; width: 20px; }
+    .info-footer {
+        font-size: 11px;
+        font-weight: 700;
+        color: #718096;
+        margin-bottom: 10px;
+    }
 
-    .btn-whatsapp-pop {
+    /* Seção do Gerente */
+    .manager-link {
         display: flex;
+        flex-direction: column;
         align-items: center;
-        justify-content: center;
-        gap: 8px;
-        background: #25d366;
-        color: white;
         text-decoration: none;
-        padding: 12px;
-        border-radius: 10px;
-        font-weight: bold;
-        font-size: 0.9rem;
+        color: #2b6cb0;
         transition: 0.3s;
     }
 
-    .btn-close-modal {
-        margin-top: 15px;
-        background: #eee;
+    .icon-animated {
+        font-size: 40px;
+        margin-bottom: 8px;
+        color: #2b6cb0;
+        animation: pulseHeadset 2s infinite ease-in-out;
+    }
+
+    .manager-link span {
+        font-weight: 800;
+        font-size: 12px;
+        letter-spacing: 0.5px;
+    }
+
+    /* Botão Fechar */
+    .btn-close-glass {
+        margin-top: 25px;
+        background: #1a365d;
+        color: white;
         border: none;
-        padding: 8px 20px;
-        border-radius: 5px;
-        color: #666;
+        padding: 12px 40px;
+        border-radius: 50px;
+        font-weight: 700;
         cursor: pointer;
-        font-weight: bold;
+        width: 100%;
+        transition: 0.3s;
     }
 
-    /* ESTILOS ORIGINAIS DO DASHBOARD */
-    body {
-        background-color: var(--bg-dark) !important;
-        color: white !important;
-        font-family: 'Segoe UI', sans-serif;
-        margin: 0;
-        padding-bottom: 90px;
+    .btn-close-glass:active {
+        transform: scale(0.95);
     }
 
-    .trading-header {
-        position: relative;
-        height: 160px;
-        background: #000;
+    /* Animação do Ícone de Gerente */
+    @keyframes pulseHeadset {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.1) rotate(5deg); }
+        100% { transform: scale(1); }
     }
 
-    .forex-chart-bg {
-        width: 100%; height: 100%;
-        background-image: url('https://img.freepik.com/free-vector/trading-chart-blue-background-with-financial-data_1017-31741.jpg');
-        background-size: cover; background-position: center;
-        opacity: 0.5;
+    /* Animação de Entrada do Modal */
+    @keyframes fadeInScale {
+        from { opacity: 0; transform: scale(0.9); }
+        to { opacity: 1; transform: scale(1); }
     }
-
-    .chart-overlay {
-        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-        background: linear-gradient(180deg, transparent 0%, var(--bg-dark) 100%);
-        display: flex; flex-direction: column; justify-content: center; align-items: center;
-    }
-
-    .brand-title { font-size: 38px; font-weight: 900; letter-spacing: 5px; margin: 0; color: #fff; }
-    .brand-subtitle { font-size: 10px; color: var(--accent-blue); letter-spacing: 3px; }
-
-    .action-grid {
-        display: grid; 
-        grid-template-columns: repeat(4, 1fr);
-        gap: 12px; 
-        padding: 20px 15px;
-        position: relative;
-        z-index: 10;
-    }
-    
-    .action-btn {
-        aspect-ratio: 1/1; 
-        border-radius: 15px;
-        display: flex; 
-        flex-direction: column; 
-        align-items: center; 
-        justify-content: center;
-        text-decoration: none; 
-        color: white; 
-        font-size: 11px; 
-        font-weight: bold;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    }
-    
-    .action-btn i { font-size: 22px; margin-bottom: 6px; }
-    .btn-blue { background: #0097e6; }
-    .btn-teal { background: #00cbcb; }
-    .btn-yellow { background: #ffc107; }
-    .btn-purple { background: #8e44ad; }
-
-    .market-section { margin-top: 10px; padding: 0 15px; }
-    .market-header-list {
-        display: flex; justify-content: space-between;
-        padding: 10px 5px; font-size: 11px; color: var(--text-gray);
-        border-bottom: 1px solid #1e2a3a;
-    }
-    .crypto-item {
-        display: flex; justify-content: space-between; align-items: center;
-        padding: 15px 5px; border-bottom: 1px solid #121b28;
-    }
-    .coin-info { display: flex; align-items: center; gap: 10px; font-size: 13px; }
-    .coin-price { font-family: monospace; font-weight: bold; font-size: 14px; }
-    .coin-change {
-        padding: 5px 8px; border-radius: 6px; font-size: 11px; font-weight: bold; min-width: 65px; text-align: center;
-    }
-    .pos { background: rgba(0, 255, 136, 0.1); color: var(--accent-green); }
-    .neg { background: rgba(255, 77, 77, 0.1); color: var(--accent-red); }
-
-    .trading-nav {
-        position: fixed; bottom: 0; width: 100%; height: 75px;
-        background: #0a1420; border-top: 1px solid #1e2a3a;
-        display: flex; justify-content: space-around; align-items: center; z-index: 1000;
-    }
-    .nav-link {
-        text-decoration: none; color: #576574;
-        display: flex; flex-direction: column; align-items: center; font-size: 10px;
-    }
-    .nav-link i { font-size: 22px; margin-bottom: 4px; }
-    .nav-link.active { color: #00a8ff; }
 </style>
 
 <script>
-    // Função para fechar o Pop-up
     function closeModal() {
         document.getElementById('welcomeModal').style.display = 'none';
     }
+    // Garante que o modal apareça ao carregar a página
+    window.onload = function() {
+        document.getElementById('welcomeModal').style.display = 'flex';
+    };
+</script>
 
-    // Script de atualização de preços (Original)
-    setInterval(() => {
-        const prices = ['btc-price', 'eth-price', 'bnb-price', 'sol-price'];
-        const id = prices[Math.floor(Math.random() * prices.length)];
-        const el = document.getElementById(id);
-        if(!el) return;
-        let val = parseFloat(el.innerText.replace(',', ''));
-        let change = (Math.random() * 2 - 1) * 0.2;
-        el.innerText = (val + change).toLocaleString(undefined, {minimumFractionDigits: 2});
-        el.style.color = change > 0 ? '#00ff88' : '#ff4d4d';
-        setTimeout(() => el.style.color = 'white', 600);
-    }, 2000);
+<div class="forex-dashboard-white">
+
+    <div class="carousel-container">
+        <div class="carousel-slide">
+            <img src="{% static 'images/banner1.jpg' %}" alt="Slide 1">
+            <img src="{% static 'images/banner2.jpg' %}" alt="Slide 2">
+            <img src="{% static 'images/banner3.jpg' %}" alt="Slide 3">
+        </div>
+    </div>
+
+    <div class="news-ticker">
+        <p><strong>CMB:</strong> é uma casa de produção de moeda Brasileira, é a sua plataforma segura de investimento;</p>
+    </div>
+
+    <div class="action-card-grid">
+        <a href="{% url 'deposito' %}" class="custom-card">
+            <div class="card-icon bg-soft-blue"><i class="fas fa-piggy-bank"></i></div>
+            <span>RECARGA</span>
+        </a>
+        <a href="{% url 'tarefa' %}" class="custom-card">
+            <div class="card-icon bg-soft-green"><i class="fas fa-rocket"></i></div>
+            <span>TRABALHO</span>
+        </a>
+        <a href="{% url 'roleta' %}" class="custom-card">
+            <div class="card-icon bg-soft-orange"><i class="fas fa-dharmachakra"></i></div>
+            <span>OFERTAS</span>
+        </a>
+        <a href="{% url 'sobre' %}" class="custom-card">
+            <div class="card-icon bg-soft-purple"><i class="fas fa-shield-alt"></i></div>
+            <span>EMPRESA</span>
+        </a>
+    </div>
+
+    <div class="exchange-section">
+        <div class="section-title">Cotações Lusófonas</div>
+        <div class="exchange-list">
+            <div class="exchange-item">
+                <div class="country-info">
+                    <span class="flag">🇧🇷</span>
+                    <div><strong>BRL</strong>/USD</div>
+                </div>
+                <div class="chart-mini"><canvas id="chartBRL" width="60" height="25"></canvas></div>
+                <div class="price">5.04</div>
+                <div class="change pos">+0.12%</div>
+            </div>
+            <div class="exchange-item">
+                <div class="country-info">
+                    <span class="flag">🇦🇴</span>
+                    <div><strong>AOA</strong>/USD</div>
+                </div>
+                <div class="chart-mini"><canvas id="chartAOA" width="60" height="25"></canvas></div>
+                <div class="price">835.50</div>
+                <div class="change neg">-0.05%</div>
+            </div>
+            <div class="exchange-item">
+                <div class="country-info">
+                    <span class="flag">🇵🇹</span>
+                    <div><strong>EUR</strong>/USD</div>
+                </div>
+                <div class="chart-mini"><canvas id="chartEUR" width="60" height="25"></canvas></div>
+                <div class="price">0.92</div>
+                <div class="change pos">+0.22%</div>
+            </div>
+            <div class="exchange-item">
+                <div class="country-info">
+                    <span class="flag">🇲🇿</span>
+                    <div><strong>MZN</strong>/USD</div>
+                </div>
+                <div class="chart-mini"><canvas id="chartMZN" width="60" height="25"></canvas></div>
+                <div class="price">63.83</div>
+                <div class="change pos">+0.01%</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<nav class="modern-nav">
+    <a href="{% url 'home' %}" class="nav-item active">
+        <i class="ri-home-4-fill"></i>
+        <span>Início</span>
+    </a>
+    <a href="{% url 'nivel' %}" class="nav-item">
+        <i class="ri-copper-diamond-line"></i>
+        <span>FUNÇÃO</span>
+    </a>
+    <a href="{% url 'renda' %}" class="nav-item">
+        <i class="ri-funds-line"></i>
+        <span>RENDA</span>
+    </a>
+    <a href="{% url 'equipa' %}" class="nav-item">
+        <i class="ri-group-line"></i>
+        <span>REDE</span>
+    </a>
+    <a href="{% url 'perfil' %}" class="nav-item">
+        <i class="ri-user-settings-line"></i>
+        <span>CONTAS</span>
+    </a>
+</nav>
+
+<link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+    /* Reset e Prevenção de Rolagem Horizontal */
+    html, body {
+        max-width: 100%;
+        overflow-x: hidden;
+        margin: 0;
+        padding: 0;
+        background-color: #ffffff !important;
+        color: #2d3436 !important;
+        font-family: 'Inter', -apple-system, sans-serif;
+    }
+
+    .forex-dashboard-white {
+        width: 100%;
+        overflow-x: hidden;
+    }
+
+    /* 1. Estilo Carrossel */
+    .carousel-container {
+        width: 100%; height: 200px;
+        overflow: hidden; position: relative;
+    }
+    .carousel-slide {
+        display: flex; width: 300%; height: 100%;
+        animation: slideTransition 15s infinite;
+    }
+    .carousel-slide img {
+        width: 33.333%; height: 100%; object-fit: cover;
+    }
+    @keyframes slideTransition {
+        0%, 30% { transform: translateX(0); }
+        33.33%, 63.33% { transform: translateX(-33.333%); }
+        66.66%, 96.66% { transform: translateX(-66.666%); }
+        100% { transform: translateX(0); }
+    }
+
+    /* 2. Frase de Letreiro */
+    .news-ticker {
+        background: #fff; border-bottom: 1px solid #eee;
+        padding: 10px 0; overflow: hidden; white-space: nowrap;
+        width: 100%;
+    }
+    .news-ticker p {
+        display: inline-block; padding-left: 100%;
+        animation: ticker 20s linear infinite;
+        font-size: 13px; color: #0046ad; margin: 0;
+    }
+    @keyframes ticker {
+        0% { transform: translate(0, 0); }
+        100% { transform: translate(-100%, 0); }
+    }
+
+    /* 3. Cards de Ação */
+    .action-card-grid {
+        display: grid; grid-template-columns: repeat(4, 1fr);
+        gap: 8px; padding: 15px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .custom-card {
+        background: #f8fafd; border-radius: 12px;
+        padding: 12px 2px; text-decoration: none;
+        display: flex; flex-direction: column; align-items: center;
+    }
+    .custom-card span { font-size: 10px; color: #000000; font-weight: 800; margin-top: 8px; }
+    .card-icon {
+        width: 40px; height: 40px; border-radius: 12px;
+        display: flex; align-items: center; justify-content: center; font-size: 18px;
+    }
+    .bg-soft-blue { background: #e3f2fd; color: #1976d2; }
+    .bg-soft-green { background: #e8f5e9; color: #388e3c; }
+    .bg-soft-orange { background: #fff3e0; color: #f57c00; }
+    .bg-soft-purple { background: #f3e5f5; color: #7b1fa2; }
+
+    /* 4. Lista de Câmbio */
+    .exchange-section { padding: 0 15px 100px; width: 100%; box-sizing: border-box; }
+    .section-title { font-weight: bold; margin-bottom: 15px; font-size: 14px; color: #636e72; }
+    .exchange-item {
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 12px 0; border-bottom: 1px solid #f1f1f1;
+    }
+    .country-info { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+    .flag { font-size: 18px; }
+    .price { font-weight: bold; font-family: monospace; font-size: 13px; }
+    .change { font-size: 9px; padding: 3px 6px; border-radius: 4px; font-weight: bold; }
+    .pos { color: #00b894; background: #e6faf5; }
+    .neg { color: #d63031; background: #fff0f0; }
+
+    /* 6. Nav Inferior - Texto em Preto Carregado */
+    .modern-nav {
+        position: fixed; bottom: 0; width: 100%; height: 65px;
+        background: #ffffff; border-top: 1px solid #eee;
+        display: flex; justify-content: space-around; align-items: center;
+        z-index: 999;
+    }
+    .nav-item {
+        text-decoration: none; color: #000000;
+        display: flex; flex-direction: column; align-items: center;
+        flex: 1;
+    }
+    .nav-item i { font-size: 22px; color: #555; }
+    .nav-item span { 
+        font-size: 10px; 
+        margin-top: 2px; 
+        font-weight: 900; /* Preto carregado */
+        color: #000000; 
+    }
+    .nav-item.active i { color: #0046ad; }
+    .nav-item.active span { color: #0046ad; }
+
+    /* 8. Pop-up Custom */
+    .modal-overlay {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0,0,0,0.7); z-index: 10000;
+        display: flex; align-items: center; justify-content: center;
+    }
+    .modal-content-small {
+        background: white; width: 85%; max-width: 300px;
+        border-radius: 15px; padding: 20px; text-align: center;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+    .modal-header-mini h3 { margin: 0; font-size: 16px; color: #0046ad; font-weight: 800; }
+    .modal-body-mini p { font-size: 13px; margin: 15px 0; color: #333; line-height: 1.4; }
+    .btn-whatsapp-minimal {
+        background: #25d366; color: white; text-decoration: none;
+        display: block; padding: 12px; border-radius: 8px; font-weight: 800; font-size: 12px;
+    }
+    .btn-close-minimal {
+        background: none; border: none; color: #777; margin-top: 15px; cursor: pointer; font-size: 12px; font-weight: 600;
+    }
+</style>
+
+<script>
+    function closeModal() { document.getElementById('welcomeModal').style.display = 'none'; }
+
+    function createChart(id, color) {
+        const canvas = document.getElementById(id);
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [1, 2, 3, 4, 5, 6],
+                datasets: [{
+                    data: Array.from({length: 6}, () => Math.floor(Math.random() * 10)),
+                    borderColor: color,
+                    borderWidth: 2,
+                    fill: false,
+                    pointRadius: 0
+                }]
+            },
+            options: {
+                responsive: false,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: { x: { display: false }, y: { display: false } }
+            }
+        });
+    }
+
+    window.addEventListener('load', () => {
+        createChart('chartBRL', '#00b894');
+        createChart('chartAOA', '#d63031');
+        createChart('chartEUR', '#00b894');
+        createChart('chartMZN', '#00b894');
+    });
 </script>
 {% endblock %}

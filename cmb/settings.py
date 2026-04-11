@@ -1,5 +1,5 @@
 """
-Django settings for ibkr project.
+Django settings for cmb project.
 """
 
 from pathlib import Path
@@ -54,7 +54,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'ibkr.urls'
+ROOT_URLCONF = 'cmb.urls'
 
 TEMPLATES = [
     {
@@ -72,7 +72,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'ibkr.wsgi.application'
+WSGI_APPLICATION = 'cmb.wsgi.application'
 
 # ======================================================================
 # DATABASE

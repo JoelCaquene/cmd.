@@ -1,379 +1,399 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Forex Mining - Trading Terminal{% endblock %}
+{% block title %}CMB - Casa de Produção de Moeda{% endblock %}
 
 {% block content %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
 
-<div class="forex-terminal">
-    {# A. HEADER PROFISSIONAL #}
-    <div class="terminal-header">
-        <div class="status-indicator">
-            <span class="live-dot"></span>
-            <span class="status-text">LIVE MARKET DATA</span>
-        </div>
-        <div class="market-info">
-            <span class="pair">EUR/USD <i class="fa-solid fa-chart-line"></i></span>
-            <span class="price" id="live-price">1.08420</span>
+<div class="cmb-wrapper">
+    <div class="cmb-nav">
+        <a href="javascript:history.back()" class="back-btn">
+            <i class="fa-solid fa-chevron-left"></i>
+        </a>
+        <div class="nav-title">TERMINAL DE PRODUÇÃO</div>
+        <div class="connection-status">
+            <span class="pulse-green"></span> SECURE
         </div>
     </div>
 
-    {% if not has_active_level %}
-    {# B. ESTADO BLOQUEADO (NÍVEL INATIVO) #}
-    <div class="locked-container">
-        <div class="lock-card">
-            <i class="fa-solid fa-shield-halved lock-icon"></i>
-            <h2>Terminal Desconectado</h2>
-            <p>Seu acesso ao mercado global está restrito. Adquira um plano de mineração para iniciar operações.</p>
-            <div class="alert-box">
-                <i class="fa-solid fa-triangle-exclamation"></i>
-                <span>STATUS: NÃO TENS AUTORIZAÇÃO, CONTACTA PRIMEIRO ADMINISTRADOR</span>
+    <div class="cmb-main-container">
+        {# HEADER INFO #}
+        <div class="cmb-header-card">
+            <div class="brand-group">
+                <span class="logo-main">CMB</span>
+                <span class="logo-sub">CURRENCY PRODUCTION HOUSE</span>
+            </div>
+            <div class="status-pill">
+                <i class="fa-solid fa-circle-check"></i> OPERACIONAL
             </div>
         </div>
-    </div>
-    {% else %}
-        
-        {# C. AREA DE ANALISE (GRAFICOS) #}
-        <div class="analysis-section">
-            <div id="chart-timeline"></div>
-        </div>
 
-        {# D. CONTAINER DE MINERAÇÃO (A TAREFA) #}
-        <div class="mining-card">
-            <div class="mining-stats">
-                <div class="stat-item">
-                    <span class="label">VOLATILIDADE</span>
-                    <span class="value high">ALTA</span>
-                </div>
-                <div class="stat-item">
-                    <span class="label">CONEXÃO</span>
-                    <span class="value secure">ENCRIPTADA</span>
-                </div>
+        {# MÁQUINA DE PRODUÇÃO ROBUSTA #}
+        <div class="mining-machine-chassis">
+            <div class="inner-venting">
+                <div class="vent"></div><div class="vent"></div><div class="vent"></div>
             </div>
-
-            <div class="display-screen">
-                <div class="scan-line"></div>
-                <p id="task-message">SISTEMA PRONTO PARA MINERAÇÃO FOREX</p>
-                <div class="progress-container" id="progress-bar-container" style="display: none;">
-                    <div class="progress-fill" id="progress-fill"></div>
-                </div>
-            </div>
-
-            <div class="control-panel">
-                <div class="status-lights">
-                    <div class="light" id="light-red" title="Aguardando"></div>
-                    <div class="light" id="light-yellow" title="Processando"></div>
-                    <div class="light" id="light-green" title="Concluído"></div>
+            
+            <div class="digital-screen" id="display-area">
+                <div class="screen-overlay"></div>
+                <div class="coin-vortex" id="coin-zone">
+                    <i class="fa-solid fa-microchip machine-core-icon"></i>
                 </div>
                 
-                <button id="work-button" class="mining-btn">
-                    <i class="fa-solid fa-microchip"></i> 
-                    <span>MINERAÇÃO FOREX</span>
-                </button>
+                <div class="production-data">
+                    <div class="counter-display" id="countdown" style="display: none;">15</div>
+                    <p id="machine-msg">READY TO PRODUCE</p>
+                </div>
+                
+                <div class="power-bar-container" id="progress-container" style="display: none;">
+                    <div class="power-fill" id="progress-fill"></div>
+                </div>
+            </div>
+
+            <div class="action-bay">
+                {% if has_active_level %}
+                    <button id="produce-btn" class="cmb-btn-primary">
+                        <span class="btn-shine"></span>
+                        <i class="fa-solid fa-bolt-lightning"></i> PRODUZIR AGORA
+                    </button>
+                {% else %}
+                    <div class="locked-ui">
+                        <button class="cmb-btn-locked" onclick="alert('Ative seu plano VIP para liberar o Terminal!')">
+                            <i class="fa-solid fa-lock"></i> TERMINAL BLOQUEADO
+                        </button>
+                        <p class="vip-warning">Requer Nível VIP Ativo para Operar</p>
+                    </div>
+                {% endif %}
             </div>
         </div>
+        
+        <div class="security-footer">
+            <i class="fa-solid fa-shield-halved"></i> 256-BIT ENCRYPTION ACTIVE
+        </div>
+    </div>
 
-        {# E. MENSAGENS DJANGO #}
-        {% if messages %}
-            {% for message in messages %}
-                <div class="toast-message {{ message.tags }}">{{ message }}</div>
-            {% endfor %}
-        {% endif %}
-
-        <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                // --- LÓGICA DO GRÁFICO (FOREX STYLE) ---
-                var options = {
-                    series: [{ data: [] }],
-                    chart: {
-                        type: 'area',
-                        height: 200, // Ajustado para telas menores
-                        toolbar: { show: false },
-                        animations: { enabled: true, easing: 'linear', dynamicAnimation: { speed: 1000 } }
-                    },
-                    colors: ['#00ff88'],
-                    fill: {
-                        type: 'gradient',
-                        gradient: { shadeIntensity: 1, opacityFrom: 0.4, opacityTo: 0.05 }
-                    },
-                    dataLabels: { enabled: false },
-                    stroke: { curve: 'smooth', width: 2 },
-                    xaxis: { labels: { show: false }, axisBorder: { show: false } },
-                    yaxis: { labels: { show: false } },
-                    grid: { borderColor: '#1a2637' }
-                };
-
-                var chart = new ApexCharts(document.querySelector("#chart-timeline"), options);
-                chart.render();
-
-                function updateChart() {
-                    let newData = [];
-                    for(let i=0; i<15; i++) {
-                        newData.push(Math.floor(Math.random() * (100 - 40) + 40));
-                    }
-                    chart.updateSeries([{ data: newData }]);
-                    const price = (1.08 + Math.random() * 0.01).toFixed(5);
-                    document.getElementById('live-price').innerText = price;
-                }
-                setInterval(updateChart, 3000);
-                updateChart();
-
-                // --- LÓGICA DE TAREFAS (DJANGO INTEGRATION) ---
-                const workButton = document.getElementById('work-button');
-                const taskMessage = document.getElementById('task-message');
-                const lightRed = document.getElementById('light-red');
-                const lightYellow = document.getElementById('light-yellow');
-                const lightGreen = document.getElementById('light-green');
-                const progressContainer = document.getElementById('progress-bar-container');
-                const progressFill = document.getElementById('progress-fill');
-
-                let tasksCompletedToday = {{ tasks_completed_today|default:0 }}; 
-                let maxTasks = {{ max_tasks|default:1 }};
-
-                function updateUI(status) {
-                    lightRed.className = 'light';
-                    lightYellow.className = 'light';
-                    lightGreen.className = 'light';
-
-                    if (status === 'idle') {
-                        lightRed.classList.add('red', 'pulse');
-                        workButton.disabled = false;
-                    } else if (status === 'working') {
-                        lightYellow.classList.add('yellow', 'blink');
-                        workButton.disabled = true;
-                    } else if (status === 'done') {
-                        lightGreen.classList.add('green', 'glow');
-                        workButton.disabled = true;
-                        workButton.innerHTML = '<i class="fa-solid fa-check"></i> OPERAÇÃO FINALIZADA';
-                    }
-                }
-
-                function checkStatus() {
-                    if (tasksCompletedToday >= maxTasks) {
-                        taskMessage.textContent = "LIMITE DIÁRIO ALCANÇADO";
-                        updateUI('done');
-                    } else {
-                        updateUI('idle');
-                    }
-                }
-
-                if (workButton) {
-                    workButton.addEventListener('click', function() {
-                        if (tasksCompletedToday < maxTasks) {
-                            updateUI('working');
-                            taskMessage.textContent = "SINCRONIZANDO...";
-                            progressContainer.style.display = 'block';
-                            
-                            let width = 0;
-                            let interval = setInterval(() => {
-                                if(width >= 100) clearInterval(interval);
-                                else {
-                                    width += 2;
-                                    progressFill.style.width = width + '%';
-                                }
-                            }, 50);
-
-                            fetch("{% url 'process_task' %}", {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'X-CSRFToken': '{{ csrf_token }}'
-                                }
-                            })
-                            .then(response => response.json())
-                            .then(data => {
-                                setTimeout(() => {
-                                    if (data.success) {
-                                        tasksCompletedToday++;
-                                        taskMessage.innerHTML = `<span style="color: #00ff88">LUCRO: KZ ${data.daily_gain}</span>`;
-                                    } else {
-                                        taskMessage.textContent = data.message || "ERRO";
-                                    }
-                                    progressContainer.style.display = 'none';
-                                    progressFill.style.width = '0%';
-                                    checkStatus();
-                                }, 2500);
-                            })
-                            .catch(error => {
-                                taskMessage.textContent = "CONEXÃO INTERROMPIDA";
-                                updateUI('idle');
-                            });
-                        }
-                    });
-                }
-                checkStatus();
-            });
-        </script>
-    {% endif %}
+    <div id="toast-container"></div>
 </div>
 
 <style>
     :root {
-        --bg-dark: #0a0f18;
-        --card-dark: #121926;
-        --accent-green: #00ff88;
-        --accent-yellow: #ffcc00;
-        --accent-red: #ff4d4d;
-        --text-main: #ffffff;
-        --text-dim: #8492a6;
+        --cmb-deep: #001a4d;
+        --cmb-blue: #002366;
+        --cmb-gold: #d4af37;
+        --cmb-gold-light: #f1d592;
+        --cmb-text: #1a202c;
+        --cmb-white: #ffffff;
+        --cmb-bg: #f8fafc;
     }
 
-    body {
-        background-color: var(--bg-dark);
-        font-family: 'Inter', sans-serif;
-        margin: 0;
-        padding: 0;
-        color: var(--text-main);
-        overflow-x: hidden; /* Previne rolagem horizontal */
+    /* Reset e Layout Base */
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    
+    body { 
+        margin: 0; 
+        background-color: var(--cmb-bg); 
+        font-family: 'Poppins', sans-serif;
+        overflow-x: hidden;
     }
 
-    .forex-terminal {
+    .cmb-wrapper {
         width: 100%;
-        max-width: 480px; /* Limite para não esticar em tablets */
+        max-width: 480px;
         margin: 0 auto;
-        padding: 10px; /* Reduzido para ganhar espaço lateral */
-        box-sizing: border-box;
+        min-height: 100vh;
+        background: var(--cmb-white);
+        display: flex;
+        flex-direction: column;
+        position: relative;
     }
 
-    /* HEADER */
-    .terminal-header {
+    /* Barra Superior */
+    .cmb-nav {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background: var(--card-dark);
-        padding: 12px;
-        border-radius: 12px;
-        border: 1px solid #1e293b;
-        margin-bottom: 12px;
+        padding: 15px 20px;
+        background: var(--cmb-white);
+        border-bottom: 1px solid #edf2f7;
     }
 
-    .status-indicator {
+    .back-btn {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f1f5f9;
+        border-radius: 12px;
+        color: var(--cmb-blue);
+        text-decoration: none;
+    }
+
+    .nav-title { font-size: 12px; font-weight: 800; color: #64748b; letter-spacing: 1px; }
+
+    .connection-status {
+        font-size: 10px;
+        font-weight: 700;
+        color: #10b981;
         display: flex;
         align-items: center;
         gap: 6px;
-        font-size: 9px;
-        font-weight: 800;
-        letter-spacing: 0.5px;
     }
 
-    .live-dot {
-        width: 7px;
-        height: 7px;
-        background: var(--accent-red);
-        border-radius: 50%;
-        animation: pulse-red 1.5s infinite;
+    .pulse-green {
+        width: 8px; height: 8px; background: #10b981; border-radius: 50%;
+        box-shadow: 0 0 0 rgba(16, 185, 129, 0.4);
+        animation: pulseGreen 2s infinite;
     }
 
-    .market-info .pair { font-size: 11px; font-weight: bold; color: var(--text-dim); }
-    .market-info .price { font-family: 'JetBrains Mono', monospace; color: var(--accent-green); font-size: 12px; }
+    /* Main Container */
+    .cmb-main-container { padding: 20px; flex: 1; }
 
-    /* GRAFICO */
-    .analysis-section {
-        background: var(--card-dark);
-        border-radius: 12px;
-        padding: 5px;
-        margin-bottom: 12px;
-        border: 1px solid #1e293b;
-    }
-
-    /* CARD DE MINERAÇÃO */
-    .mining-card {
-        background: var(--card-dark);
-        border-radius: 15px;
-        padding: 15px;
-        border: 1px solid #1e293b;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    }
-
-    .mining-stats {
+    .cmb-header-card {
         display: flex;
         justify-content: space-between;
-        margin-bottom: 15px;
+        align-items: center;
+        margin-bottom: 25px;
     }
 
-    .stat-item .label { font-size: 8px; color: var(--text-dim); }
-    .stat-item .value { font-size: 11px; font-weight: bold; }
+    .logo-main { display: block; font-size: 28px; font-weight: 800; color: var(--cmb-blue); line-height: 1; }
+    .logo-sub { font-size: 9px; color: var(--cmb-gold); font-weight: 700; letter-spacing: 0.5px; }
 
-    .display-screen {
-        background: #05070a;
-        border-radius: 8px;
-        padding: 25px 10px;
-        text-align: center;
+    .status-pill {
+        background: #ecfdf5;
+        color: #059669;
+        padding: 6px 12px;
+        border-radius: 50px;
+        font-size: 10px;
+        font-weight: 700;
+    }
+
+    /* Chassi da Máquina */
+    .mining-machine-chassis {
+        background: #e2e8f0;
+        border-radius: 30px;
+        padding: 15px;
+        border: 1px solid #cbd5e1;
+        box-shadow: inset 0 2px 10px rgba(255,255,255,0.5), 0 20px 40px rgba(0,0,0,0.1);
+    }
+
+    .inner-venting { display: flex; gap: 4px; margin-bottom: 10px; padding-left: 10px; }
+    .vent { width: 20px; height: 4px; background: #cbd5e1; border-radius: 10px; }
+
+    .digital-screen {
+        background: radial-gradient(circle at center, #003399 0%, #001a4d 100%);
+        height: 280px;
+        border-radius: 20px;
         position: relative;
         overflow: hidden;
-        border: 1px solid #1e293b;
-        margin-bottom: 15px;
-    }
-
-    .scan-line {
-        position: absolute;
-        top: 0; left: 0; width: 100%; height: 2px;
-        background: rgba(0, 255, 136, 0.2);
-        animation: scan 3s infinite linear;
-    }
-
-    #task-message {
-        font-family: 'JetBrains Mono', monospace;
-        font-size: 13px;
-        color: var(--text-main);
-    }
-
-    .progress-container {
-        width: 100%;
-        height: 4px;
-        background: #1a2637;
-        margin-top: 12px;
-        border-radius: 2px;
-    }
-    .progress-fill {
-        height: 100%;
-        background: var(--accent-green);
-        box-shadow: 0 0 10px var(--accent-green);
-    }
-
-    .status-lights {
         display: flex;
-        gap: 12px;
-        margin-bottom: 15px;
+        flex-direction: column;
+        align-items: center;
         justify-content: center;
+        border: 4px solid #1e293b;
     }
 
-    .light {
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        background: #232d3d;
+    .screen-overlay {
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: repeating-linear-gradient(0deg, rgba(0,0,0,0.05) 0px, rgba(0,0,0,0.05) 1px, transparent 2px);
+        pointer-events: none;
     }
 
-    .light.red { background: var(--accent-red); box-shadow: 0 0 10px var(--accent-red); }
-    .light.yellow { background: var(--accent-yellow); box-shadow: 0 0 10px var(--accent-yellow); }
-    .light.green { background: var(--accent-green); box-shadow: 0 0 10px var(--accent-green); }
+    .machine-core-icon { font-size: 60px; color: var(--cmb-gold); opacity: 0.8; }
 
-    .mining-btn {
+    .counter-display {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 56px;
+        color: var(--cmb-gold);
+        text-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+    }
+
+    #machine-msg { color: #94a3b8; font-size: 11px; font-weight: 600; letter-spacing: 2px; margin-top: 10px; }
+
+    .power-bar-container {
+        width: 70%;
+        height: 8px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 20px;
+        margin-top: 20px;
+        padding: 2px;
+    }
+
+    .power-fill {
+        height: 100%; width: 0%;
+        background: linear-gradient(90deg, var(--cmb-gold) 0%, #fff 100%);
+        border-radius: 20px;
+        box-shadow: 0 0 15px var(--cmb-gold);
+    }
+
+    /* Botões */
+    .action-bay { margin-top: 20px; }
+
+    .cmb-btn-primary {
         width: 100%;
-        padding: 16px;
-        border-radius: 10px;
-        border: none;
-        background: linear-gradient(135deg, #00ff88 0%, #00bd65 100%);
-        color: #000;
-        font-weight: 800;
-        font-size: 15px;
-        cursor: pointer;
-    }
-
-    /* ESTADO BLOQUEADO */
-    .lock-card {
-        background: var(--card-dark);
         padding: 20px;
-        border-radius: 15px;
-        text-align: center;
-        border: 1px dashed #334155;
+        border-radius: 18px;
+        border: none;
+        background: var(--cmb-blue);
+        color: white;
+        font-size: 16px;
+        font-weight: 800;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 10px 25px rgba(0, 35, 102, 0.3);
+        transition: transform 0.2s ease;
     }
 
-    @keyframes pulse-red { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
-    @keyframes scan { 0% { top: 0; } 100% { top: 100%; } }
+    .cmb-btn-primary:active { transform: scale(0.98); }
+
+    .btn-shine {
+        position: absolute;
+        top: 0; left: -100%; width: 100%; height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: 0.5s;
+        animation: shine 3s infinite;
+    }
+
+    .cmb-btn-locked {
+        width: 100%;
+        padding: 20px;
+        border-radius: 18px;
+        background: #94a3b8;
+        color: white;
+        border: none;
+        font-weight: 800;
+        opacity: 0.7;
+    }
+
+    .vip-warning { text-align: center; color: #ef4444; font-size: 10px; margin-top: 10px; font-weight: 700; }
+
+    .security-footer {
+        text-align: center;
+        margin-top: 30px;
+        font-size: 10px;
+        color: #94a3b8;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    /* Moedas Animadas */
+    .premium-coin {
+        position: absolute;
+        color: var(--cmb-gold);
+        font-size: 28px;
+        filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.6));
+        animation: coinDrop 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+
+    @keyframes coinDrop {
+        0% { transform: translateY(100px) rotate(0deg) scale(0); opacity: 0; }
+        30% { opacity: 1; }
+        100% { transform: translateY(-150px) rotate(360deg) scale(1.5); opacity: 0; }
+    }
+
+    @keyframes pulseGreen {
+        0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+        70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
+
+    @keyframes shine {
+        0% { left: -100%; }
+        20% { left: 100%; }
+        100% { left: 100%; }
+    }
 </style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const produceBtn = document.getElementById('produce-btn');
+    const displayArea = document.getElementById('display-area');
+    const coinZone = document.getElementById('coin-zone');
+    const countdown = document.getElementById('countdown');
+    const msg = document.getElementById('machine-msg');
+    const progressContainer = document.getElementById('progress-container');
+    const progressFill = document.getElementById('progress-fill');
+
+    let tasksDone = {{ tasks_completed_today|default:0 }};
+    let maxTasks = {{ max_tasks|default:1 }};
+
+    function createPremiumCoin() {
+        const coin = document.createElement('i');
+        coin.className = 'fa-solid fa-circle-dollar-to-slot premium-coin';
+        coin.style.left = (Math.random() * 70 + 15) + '%';
+        coin.style.top = '60%';
+        displayArea.appendChild(coin);
+        setTimeout(() => coin.remove(), 1500);
+    }
+
+    function checkStatus() {
+        if (tasksDone >= maxTasks) {
+            msg.textContent = "DAILY LIMIT REACHED";
+            if(produceBtn) {
+                produceBtn.disabled = true;
+                produceBtn.style.background = "#64748b";
+                produceBtn.innerHTML = '<i class="fa-solid fa-hourglass"></i> VOLTE AMANHÃ';
+            }
+        }
+    }
+
+    if (produceBtn) {
+        produceBtn.addEventListener('click', function() {
+            produceBtn.disabled = true;
+            msg.textContent = "PROCESSING UNITS...";
+            progressContainer.style.display = 'block';
+            countdown.style.display = 'block';
+            coinZone.style.display = 'none';
+
+            let timeLeft = 15;
+            let width = 0;
+
+            let timer = setInterval(() => {
+                timeLeft--;
+                width += (100/15);
+                countdown.textContent = timeLeft;
+                progressFill.style.width = width + '%';
+                createPremiumCoin();
+
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    finalizeProduction();
+                }
+            }, 1000);
+        });
+    }
+
+    function finalizeProduction() {
+        fetch("{% url 'process_task' %}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                tasksDone++;
+                msg.innerHTML = `<span style="color: #10b981">EARNED: KZ ${data.daily_gain}</span>`;
+            } else {
+                msg.textContent = "SYSTEM ERROR";
+            }
+            countdown.style.display = 'none';
+            progressContainer.style.display = 'none';
+            coinZone.style.display = 'block';
+            checkStatus();
+        });
+    }
+
+    checkStatus();
+});
+</script>
 {% endblock %}

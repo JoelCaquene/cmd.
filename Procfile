@@ -1,1 +1,1 @@
-web: gunicorn ibkr.wsgi
+web: gunicorn cmb.wsgi

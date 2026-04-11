@@ -136,67 +136,86 @@ def deposito(request):
     return render(request, 'deposito.html', context)
 
 @login_required
-def approve_deposit(request, deposit_id):
-    if not request.user.is_staff:
-        return redirect('menu')
-    deposit = get_object_or_404(Deposit, id=deposit_id)
-    if not deposit.is_approved:
-        deposit.is_approved = True
-        deposit.save()
-        deposit.user.available_balance += deposit.amount
-        deposit.user.save()
-        messages.success(request, 'Depósito aprovado.')
-    return redirect('renda')
-
-# --- SAQUE ---
-@login_required
 def saque(request):
-    MIN_WITHDRAWAL_AMOUNT = 2500
+    # Configurações de Regras
+    MIN_WITHDRAWAL_AMOUNT = 1500  
     START_TIME = time(9, 0, 0)
     END_TIME = time(17, 0, 0)
-    withdrawal_instruction = PlatformSettings.objects.first().withdrawal_instruction if PlatformSettings.objects.first() else ''
+    TAXA_PERCENTUAL = Decimal('0.10')  # 10% de desconto
+    
+    # Dados de suporte
     withdrawal_records = Withdrawal.objects.filter(user=request.user).order_by('-created_at')
     has_bank_details = BankDetails.objects.filter(user=request.user).exists()
-    now = timezone.localtime(timezone.now()).time()
-    today = timezone.localdate(timezone.now())
-    is_time_to_withdraw = START_TIME <= now <= END_TIME
-    withdrawals_today_count = Withdrawal.objects.filter(user=request.user, created_at__date=today, status__in=['Pendente', 'Aprovado']).count()
-    can_withdraw_today = withdrawals_today_count == 0
     
+    # Lógica de Tempo e Data
+    agora_full = timezone.localtime(timezone.now())
+    now_time = agora_full.time()
+    today_date = agora_full.date()
+    dia_semana = agora_full.weekday()
+    
+    # Verificações de permissão
+    is_working_day = dia_semana < 6  # Segunda a Sábado
+    is_within_hours = START_TIME <= now_time <= END_TIME
+    
+    # Verifica se já sacou hoje
+    withdrawals_today_count = Withdrawal.objects.filter(
+        user=request.user, 
+        created_at__date=today_date
+    ).exclude(status='Cancelado').count()
+    
+    can_withdraw_today = (withdrawals_today_count == 0)
+
     if request.method == 'POST':
         form = WithdrawalForm(request.POST)
         if form.is_valid():
             amount = form.cleaned_data['amount']
-            if not can_withdraw_today:
-                messages.error(request, 'Apenas 1 saque por dia.')
-            elif not is_time_to_withdraw:
-                messages.error(request, 'Fora do horário de saque.')
+            
+            # 1. Validações
+            if not is_working_day:
+                messages.error(request, 'Levantamentos não são permitidos aos Domingos.')
+            elif not is_within_hours:
+                messages.error(request, 'Fora do horário de saque (09:00 às 17:00).')
+            elif not can_withdraw_today:
+                messages.error(request, 'Você já realizou um levantamento hoje. Limite de 1 por dia.')
             elif not has_bank_details:
-                messages.error(request, 'Adicione coordenadas bancárias.')
+                messages.error(request, 'Adicione suas coordenadas bancárias no perfil.')
             elif amount < MIN_WITHDRAWAL_AMOUNT:
-                messages.error(request, 'Valor mínimo insuficiente.')
+                messages.error(request, f'O valor mínimo para saque é de {MIN_WITHDRAWAL_AMOUNT} KZ.')
             elif request.user.available_balance < amount:
-                messages.error(request, 'Saldo insuficiente.')
+                messages.error(request, 'Saldo insuficiente para realizar esta operação.')
+            
             else:
-                Withdrawal.objects.create(user=request.user, amount=amount)
+                # 2. LÓGICA DE EXECUÇÃO (Cálculo da Taxa)
+                taxa_valor = amount * TAXA_PERCENTUAL
+                valor_liquido = amount - taxa_valor
+                
+                # 3. CRIAÇÃO DO REGISTRO (Salvando valor bruto, taxa e líquido)
+                Withdrawal.objects.create(
+                    user=request.user, 
+                    amount=amount,        # Valor total (ex: 3000)
+                    fee=taxa_valor,       # Taxa (ex: 300)
+                    net_amount=valor_liquido, # Valor a pagar (ex: 2700)
+                    status='Pending'
+                )
+                
+                # 4. DEDUÇÃO DO SALDO
                 request.user.available_balance -= amount
                 request.user.save()
-                messages.success(request, 'Saque solicitado.')
+                
+                messages.success(request, f'Saque de {amount} KZ solicitado! Você receberá {valor_liquido} KZ após a taxa.')
                 return redirect('saque')
     else:
         form = WithdrawalForm()
 
     context = {
-        'withdrawal_instruction': withdrawal_instruction,
-        'withdrawal_records': withdrawal_records,
         'form': form,
         'has_bank_details': has_bank_details,
-        'is_time_to_withdraw': is_time_to_withdraw,
-        'MIN_WITHDRAWAL_AMOUNT': MIN_WITHDRAWAL_AMOUNT,
+        'is_time_to_withdraw': is_within_hours and is_working_day,
         'can_withdraw_today': can_withdraw_today,
+        'MIN_WITHDRAWAL_AMOUNT': MIN_WITHDRAWAL_AMOUNT,
     }
     return render(request, 'saque.html', context)
-
+    
 # --- TAREFA ---
 @login_required
 def tarefa(request):
@@ -256,8 +275,8 @@ def process_task(request):
             # Nível B (30 KZ)
             p2 = p1.invited_by
             if p2:
-                p2.available_balance += Decimal('30.00')
-                p2.subsidy_balance += Decimal('30.00')
+                p2.available_balance += Decimal('15.00')
+                p2.subsidy_balance += Decimal('15.00')
                 p2.save()
 
                 # Nível C (10 KZ)
@@ -297,7 +316,7 @@ def nivel(request):
             # Nível A (15%)
             p1 = request.user.invited_by
             if p1 and UserLevel.objects.filter(user=p1, is_active=True).exists():
-                com1 = val * Decimal('0.15')
+                com1 = val * Decimal('0.12')
                 p1.available_balance += com1
                 p1.subsidy_balance += com1
                 p1.save()
@@ -305,7 +324,7 @@ def nivel(request):
                 # Nível B (3%)
                 p2 = p1.invited_by
                 if p2 and UserLevel.objects.filter(user=p2, is_active=True).exists():
-                    com2 = val * Decimal('0.03')
+                    com2 = val * Decimal('0.02')
                     p2.available_balance += com2
                     p2.subsidy_balance += com2
                     p2.save()
@@ -329,27 +348,29 @@ def nivel(request):
     }
     return render(request, 'nivel.html', context)
 
-# --- EQUIPA ---
 @login_required
 def equipa(request):
     user = request.user
-    level_a = CustomUser.objects.filter(invited_by=user)
+    # Otimizado: prefetch_related busca os níveis de uma vez só
+    level_a = CustomUser.objects.filter(invited_by=user).prefetch_related('userlevel_set__level')
     level_b = CustomUser.objects.filter(invited_by__in=level_a)
     level_c = CustomUser.objects.filter(invited_by__in=level_b)
 
+    # Membros do Nível A com investimento ativo
+    level_a_active_count = level_a.filter(userlevel__is_active=True).distinct().count()
+    
+    # Cálculo dos SEM INVESTIMENTO (Inativos) do Nível A
+    level_a_inactive_count = level_a.count() - level_a_active_count
+
     context = {
         'team_count': level_a.count() + level_b.count() + level_c.count(),
-        'total_investors': (level_a.filter(userlevel__is_active=True).distinct().count() + 
-                           level_b.filter(userlevel__is_active=True).distinct().count() + 
-                           level_c.filter(userlevel__is_active=True).distinct().count()),
         'invite_link': request.build_absolute_uri(reverse('cadastro')) + f'?invite={user.invite_code}',
         'subsidy_balance': user.subsidy_balance,
+        'level_a_members': level_a,
         'level_a_count': level_a.count(),
-        'level_a_investors': level_a.filter(userlevel__is_active=True).distinct().count(),
+        'level_a_inactive': level_a_inactive_count,
         'level_b_count': level_b.count(),
-        'level_b_investors': level_b.filter(userlevel__is_active=True).distinct().count(),
         'level_c_count': level_c.count(),
-        'level_c_investors': level_c.filter(userlevel__is_active=True).distinct().count(),
     }
     return render(request, 'equipa.html', context)
 
