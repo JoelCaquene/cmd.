@@ -17,9 +17,11 @@ SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', default=False, cast=bool)
 
 # ======================================================================
-# CONFIGURAÇÃO DOS HOSTS PERMITIDOS
+# CONFIGURAÇÃO DOS HOSTS PERMITIDOS (ATUALIZADO COM DOMÍNIO NOVO)
 # ======================================================================
 ALLOWED_HOSTS = [
+    'www.cmbb.ink',
+    'cmbb.ink',
     'www.cmd.it.com',
     'cmd.it.com',
     'cmd-ang.onrender.com',
@@ -121,10 +123,10 @@ AUTH_USER_MODEL = 'core.CustomUser'
 LOGIN_URL = 'login'
 
 if not DEBUG:
-    # DESATIVADO PREPEND_WWW para permitir acesso direto via cmd.it.com
+    # PREPEND_WWW = False evita loops de redirecionamento em domínios novos
     PREPEND_WWW = False 
     
-    # REDIRECIONA PARA HTTPS
+    # REDIRECIONA PARA HTTPS (Essencial para o selo de segurança)
     SECURE_SSL_REDIRECT = True
     
     # SEGURANÇA DE COOKIES
@@ -134,7 +136,7 @@ if not DEBUG:
     SECURE_CONTENT_TYPE_NOSNIFF = True
     X_FRAME_OPTIONS = 'DENY'
     
-    # HSTS (Configuração segura mas sem forçar subdomínios problemáticos)
+    # HSTS
     SECURE_HSTS_SECONDS = 31536000
     SECURE_HSTS_INCLUDE_SUBDOMAINS = False  
     SECURE_HSTS_PRELOAD = True
