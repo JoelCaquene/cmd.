@@ -17,7 +17,7 @@ SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', default=False, cast=bool)
 
 # ======================================================================
-# CONFIGURAÇÃO DOS HOSTS PERMITIDOS (DOMÍNIO PERSONALIZADO)
+# CONFIGURAÇÃO DOS HOSTS PERMITIDOS
 # ======================================================================
 ALLOWED_HOSTS = [
     'www.cmd.it.com',
@@ -101,7 +101,6 @@ STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 
-# Armazenamento otimizado para produção
 if not DEBUG:
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
@@ -115,31 +114,31 @@ if not os.path.exists(MEDIA_ROOT):
     os.makedirs(MEDIA_ROOT)
 
 # ======================================================================
-# SEGURANÇA REFORÇADA E REDIRECIONAMENTO WWW
+# SEGURANÇA E REDIRECIONAMENTO
 # ======================================================================
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'core.CustomUser'
 LOGIN_URL = 'login'
 
 if not DEBUG:
-    # 1. FORÇA O USO DE WWW (Se entrar sem www, ele redireciona)
-    PREPEND_WWW = True
+    # DESATIVADO PREPEND_WWW para permitir acesso direto via cmd.it.com
+    PREPEND_WWW = False 
     
-    # 2. REDIRECIONA PARA HTTPS (Segurança do site)
+    # REDIRECIONA PARA HTTPS
     SECURE_SSL_REDIRECT = True
     
-    # 3. SEGURANÇA DE COOKIES
+    # SEGURANÇA DE COOKIES
     CSRF_COOKIE_SECURE = True
     SESSION_COOKIE_SECURE = True
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
     X_FRAME_OPTIONS = 'DENY'
     
-    # 4. HSTS (Força navegadores a usar HTTPS)
+    # HSTS (Configuração segura mas sem forçar subdomínios problemáticos)
     SECURE_HSTS_SECONDS = 31536000
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = False  
     SECURE_HSTS_PRELOAD = True
     
-    # 5. HEADER PARA PROXY DO RENDER
+    # HEADER PARA PROXY DO RENDER
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     
