@@ -17,7 +17,7 @@ SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', default=False, cast=bool)
 
 # ======================================================================
-# CONFIGURAÇÃO DOS HOSTS PERMITIDOS (ATUALIZADO COM DOMÍNIO NOVO)
+# CONFIGURAÇÃO DOS HOSTS PERMITIDOS
 # ======================================================================
 ALLOWED_HOSTS = [
     'www.cmbb.ink',
@@ -121,10 +121,10 @@ AUTH_USER_MODEL = 'core.CustomUser'
 LOGIN_URL = 'login'
 
 if not DEBUG:
-    # PREPEND_WWW = False evita loops de redirecionamento em domínios novos
+    # PREPEND_WWW = False é CRUCIAL aqui para não forçar o domínio sem www que está com erro
     PREPEND_WWW = False 
     
-    # REDIRECIONA PARA HTTPS (Essencial para o selo de segurança)
+    # REDIRECIONA PARA HTTPS
     SECURE_SSL_REDIRECT = True
     
     # SEGURANÇA DE COOKIES
@@ -134,10 +134,11 @@ if not DEBUG:
     SECURE_CONTENT_TYPE_NOSNIFF = True
     X_FRAME_OPTIONS = 'DENY'
     
-    # HSTS
+    # HSTS (Configurado para aceitar o www como primário com segurança)
     SECURE_HSTS_SECONDS = 31536000
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = False  
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True  
     SECURE_HSTS_PRELOAD = True
     
     # HEADER PARA PROXY DO RENDER
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    
