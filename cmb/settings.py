@@ -129,8 +129,8 @@ AUTH_USER_MODEL = 'core.CustomUser'
 LOGIN_URL = 'login'
 
 if not DEBUG:
-    # FORÇA O REDIRECIONAMENTO PARA WWW (cmbb.store -> www.cmbb.store)
-    PREPEND_WWW = True 
+    # DESATIVADO para evitar loop de redirecionamento (O Render já gerencia isso)
+    PREPEND_WWW = False 
     
     # REDIRECIONA PARA HTTPS
     SECURE_SSL_REDIRECT = True
@@ -147,6 +147,6 @@ if not DEBUG:
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True  
     SECURE_HSTS_PRELOAD = True
     
-    # HEADER PARA PROXY DO RENDER
+    # HEADER PARA PROXY DO RENDER (Essencial para identificar HTTPS corretamente)
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     
