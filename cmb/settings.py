@@ -22,8 +22,6 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 ALLOWED_HOSTS = [
     'www.cmbb.ink',
     'cmbb.ink',
-    'www.cmd.it.com',
-    'cmd.it.com',
     'cmd-ang.onrender.com',
     'localhost',
     '127.0.0.1',
@@ -143,4 +141,3 @@ if not DEBUG:
     
     # HEADER PARA PROXY DO RENDER
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-    
