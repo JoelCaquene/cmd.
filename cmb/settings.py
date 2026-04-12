@@ -51,7 +51,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware', 
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
+    'django.middleware.common.CommonMiddleware', # Necessário para o PREPEND_WWW
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -114,17 +114,17 @@ if not os.path.exists(MEDIA_ROOT):
     os.makedirs(MEDIA_ROOT)
 
 # ======================================================================
-# SEGURANÇA E REDIRECIONAMENTO
+# SEGURANÇA E REDIRECIONAMENTO (WWW E HTTPS)
 # ======================================================================
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'core.CustomUser'
 LOGIN_URL = 'login'
 
 if not DEBUG:
-    # PREPEND_WWW = False é CRUCIAL aqui para não forçar o domínio sem www que está com erro
-    PREPEND_WWW = False 
+    # FORÇA O REDIRECIONAMENTO PARA WWW (cmbb.ink -> www.cmbb.ink)
+    PREPEND_WWW = True 
     
-    # REDIRECIONA PARA HTTPS
+    # REDIRECIONA PARA HTTPS (Segurança total)
     SECURE_SSL_REDIRECT = True
     
     # SEGURANÇA DE COOKIES
@@ -134,11 +134,11 @@ if not DEBUG:
     SECURE_CONTENT_TYPE_NOSNIFF = True
     X_FRAME_OPTIONS = 'DENY'
     
-    # HSTS (Configurado para aceitar o www como primário com segurança)
+    # HSTS (Informa ao navegador para usar sempre HTTPS por 1 ano)
     SECURE_HSTS_SECONDS = 31536000
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True  
     SECURE_HSTS_PRELOAD = True
     
-    # HEADER PARA PROXY DO RENDER
+    # HEADER PARA PROXY DO RENDER (Essencial para não dar erro de redirect infinito)
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     
