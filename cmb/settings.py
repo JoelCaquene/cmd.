@@ -1,5 +1,6 @@
 """
 Django settings for cmb project.
+Configurado para Produção no Render.com com o domínio cmbb.store.
 """
 
 from pathlib import Path
@@ -20,8 +21,8 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 # CONFIGURAÇÃO DOS HOSTS PERMITIDOS
 # ======================================================================
 ALLOWED_HOSTS = [
-    'www.cmbb.ink',
-    'cmbb.ink',
+    'www.cmbb.store',
+    'cmbb.store',
     'cmd-ang.onrender.com',
     'localhost',
     '127.0.0.1',
@@ -31,6 +32,13 @@ if not DEBUG:
     RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
     if RENDER_EXTERNAL_HOSTNAME and RENDER_EXTERNAL_HOSTNAME not in ALLOWED_HOSTS:
         ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+
+# ORIGENS CONFIÁVEIS PARA CSRF (Obrigatório para evitar erro 403 em produção)
+CSRF_TRUSTED_ORIGINS = [
+    'https://www.cmbb.store',
+    'https://cmbb.store',
+    'https://cmd-ang.onrender.com',
+]
 
 # Application definition
 INSTALLED_APPS = [
@@ -51,7 +59,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware', 
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware', # Essencial para o PREPEND_WWW
+    'django.middleware.common.CommonMiddleware', 
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -79,7 +87,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'cmb.wsgi.application'
 
 # ======================================================================
-# DATABASE
+# DATABASE (SQLite Local, PostgreSQL em Produção)
 # ======================================================================
 DATABASES = {
     'default': dj_database_url.config(
@@ -121,7 +129,7 @@ AUTH_USER_MODEL = 'core.CustomUser'
 LOGIN_URL = 'login'
 
 if not DEBUG:
-    # FORÇA O REDIRECIONAMENTO PARA WWW (cmbb.ink -> www.cmbb.ink)
+    # FORÇA O REDIRECIONAMENTO PARA WWW (cmbb.store -> www.cmbb.store)
     PREPEND_WWW = True 
     
     # REDIRECIONA PARA HTTPS
@@ -139,6 +147,6 @@ if not DEBUG:
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True  
     SECURE_HSTS_PRELOAD = True
     
-    # HEADER PARA PROXY DO RENDER (Evita loops de redirecionamento)
+    # HEADER PARA PROXY DO RENDER
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     
