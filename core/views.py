@@ -138,7 +138,7 @@ def deposito(request):
 @login_required
 def saque(request):
     # Configurações de Regras
-    MIN_WITHDRAWAL_AMOUNT = 1500  
+    MIN_WITHDRAWAL_AMOUNT = 3000  
     START_TIME = time(9, 0, 0)
     END_TIME = time(17, 0, 0)
     TAXA_PERCENTUAL = Decimal('0.10')  # 10% de desconto
